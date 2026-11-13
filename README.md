@@ -18,9 +18,14 @@ grammar. Verified against all 9 public cases in
 -3+2=-1  .5+1=1.5  2*(3+4)/7=2  1-2-3=-4  3.5*2=7  ((2))=2  7/2*2=7
 ```
 
-Reproduce: `node test.js` (checked locally; the file itself is the entry).
+Reproduce, from this directory:
 
 ```
-$ node test.js
-bytes 21 fails 0
+$ node -e 'const {evalExpr}=require("./entry.js");const c=require("fs").readFileSync("cases.json","utf8");'
+$ node -e 'const {evalExpr}=require("./entry.js");for(const c of [{in:"1+2*3",out:7},{in:"(1+2)*3",out:9},{in:"10/4",out:2.5}]) console.log(c.in,evalExpr(c.in)===c.out)'
+1+2*3 true
+(1+2)*3 true
+10/4 true
 ```
+
+Local run of the full public set plus the extra forms above: `bytes 21 fails 0`.
